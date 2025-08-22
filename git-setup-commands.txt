@@ -1,0 +1,44 @@
+# Git Repository Setup Commands for WordPress Plugin Starter Template
+
+## Step 1: Initialize Git Repository
+git init
+
+## Step 2: Configure Git (replace with your details)
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+
+## Step 3: Add all files to staging
+git add .
+
+## Step 4: Create initial commit
+git commit -m "Initial commit: WordPress Plugin Starter Template
+
+- Complete plugin architecture following ACF, StudioPress, and Genesis patterns
+- Modular class structure with dedicated managers
+- Development tooling (Composer, npm, PHPCS, ESLint)
+- Security and performance best practices
+- Comprehensive documentation and examples"
+
+## Step 5: Create GitHub repository (via GitHub web interface)
+# 1. Go to https://github.com
+# 2. Click "New repository"
+# 3. Name it: "wordpress-plugin-starter-template"
+# 4. Add description: "Professional WordPress plugin template following industry best practices"
+# 5. Keep it public or private as preferred
+# 6. DON'T initialize with README (we already have one)
+# 7. Click "Create repository"
+
+## Step 6: Add remote origin (replace with your GitHub username)
+git remote add origin https://github.com/YOUR_USERNAME/wordpress-plugin-starter-template.git
+
+## Step 7: Push to GitHub
+git branch -M main
+git push -u origin main
+
+## Alternative: Using SSH (if you have SSH keys set up)
+# git remote add origin git@github.com:YOUR_USERNAME/wordpress-plugin-starter-template.git
+
+## Verification Commands
+git status
+git log --oneline
+git remote -v
