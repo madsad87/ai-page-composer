@@ -8,11 +8,11 @@
  * plugin initialization is triggered.
  *
  * Plugin Name: AI Page Composer
- * Plugin URI: https://yourwebsite.com/plugins/ai-page-composer
+ * Plugin URI: https://github.com/madsad87/ai-page-composer
  * Description: AI-powered page composition tool with block preferences, API integration, and intelligent content generation.
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Author: madsad87
+ * Author URI: https://github.com/madsad87
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: ai-page-composer
@@ -37,9 +37,14 @@ define( 'AI_PAGE_COMPOSER_PLUGIN_FILE', __FILE__ );
 define( 'AI_PAGE_COMPOSER_TEXT_DOMAIN', 'ai-page-composer' );
 define( 'AI_PAGE_COMPOSER_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
-// Autoloader
-require_once AI_PAGE_COMPOSER_PLUGIN_DIR . 'includes/class-autoloader.php';
-AIPageComposer\Autoloader::register();
+// Use Composer's autoloader if available, otherwise fall back to custom autoloader
+if ( file_exists( AI_PAGE_COMPOSER_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+    require_once AI_PAGE_COMPOSER_PLUGIN_DIR . 'vendor/autoload.php';
+} else {
+    // Fallback to custom autoloader
+    require_once AI_PAGE_COMPOSER_PLUGIN_DIR . 'includes/class-autoloader.php';
+    AIPageComposer\Autoloader::register();
+}
 
 // Initialize the plugin
 $ai_page_composer_plugin = null;
