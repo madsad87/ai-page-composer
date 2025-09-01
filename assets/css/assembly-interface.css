@@ -1,0 +1,796 @@
+/**
+ * Assembly Interface CSS - Styling for preview modal and plugin indicators
+ * 
+ * This file contains the styling for the AI Page Composer assembly interface,
+ * including preview modals, plugin indicators, responsive design, and accessibility features.
+ */
+
+/* ==========================================================================
+   Assembly Interface Base Styles
+   ========================================================================== */
+
+.ai-composer-assembly-interface {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Assembly Controls */
+.ai-composer-controls {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ai-composer-controls h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #23282d;
+}
+
+.ai-composer-control-group {
+    margin-bottom: 15px;
+}
+
+.ai-composer-control-group:last-child {
+    margin-bottom: 0;
+}
+
+.ai-composer-control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.ai-composer-control-group input[type="text"],
+.ai-composer-control-group input[type="email"],
+.ai-composer-control-group textarea,
+.ai-composer-control-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.ai-composer-control-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Assembly Buttons */
+.ai-composer-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ai-composer-btn:hover {
+    background: #005a87;
+    color: #fff;
+}
+
+.ai-composer-btn:disabled {
+    background: #8c8f94;
+    cursor: not-allowed;
+}
+
+.ai-composer-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.ai-composer-btn.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: ai-composer-spin 1s linear infinite;
+}
+
+.ai-composer-btn.secondary {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.ai-composer-btn.secondary:hover {
+    background: #dcdcde;
+}
+
+/* ==========================================================================
+   Preview Modal
+   ========================================================================== */
+
+.ai-composer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+}
+
+.ai-composer-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.ai-composer-modal-content {
+    position: relative;
+    background: #fff;
+    margin: 20px auto;
+    max-width: 95vw;
+    max-height: 95vh;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-composer-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: #f0f0f1;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.ai-composer-modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #23282d;
+}
+
+.ai-composer-responsive-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.ai-composer-responsive-btn {
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.ai-composer-responsive-btn:hover,
+.ai-composer-responsive-btn.active {
+    background: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.ai-composer-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #8c8f94;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.ai-composer-modal-close:hover {
+    background: #dcdcde;
+    color: #23282d;
+}
+
+.ai-composer-modal-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.ai-composer-preview-container {
+    flex: 1;
+    background: #f0f0f1;
+    padding: 20px;
+    overflow: auto;
+}
+
+#ai-composer-preview-iframe {
+    width: 100%;
+    height: 800px;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    background: #fff;
+    transition: width 0.3s ease;
+}
+
+.ai-composer-preview-sidebar {
+    width: 300px;
+    background: #fff;
+    border-left: 1px solid #dcdcde;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Plugin Indicators
+   ========================================================================== */
+
+.ai-composer-plugin-indicators,
+.ai-composer-accessibility-report {
+    padding: 20px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.ai-composer-plugin-indicators:last-child,
+.ai-composer-accessibility-report:last-child {
+    border-bottom: none;
+}
+
+.ai-composer-plugin-indicators h3,
+.ai-composer-accessibility-report h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #23282d;
+}
+
+.ai-composer-indicator-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+}
+
+.ai-composer-indicator-item.fallback {
+    border-left-color: #e74c3c;
+    background: #fdf2f2;
+}
+
+.indicator-plugin {
+    padding: 4px 8px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.indicator-details {
+    flex: 1;
+}
+
+.block-title {
+    font-weight: 600;
+    color: #23282d;
+    margin-bottom: 2px;
+}
+
+.fallback-label {
+    font-size: 11px;
+    color: #e74c3c;
+    background: #fdf2f2;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Accessibility Report
+   ========================================================================== */
+
+.accessibility-score {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(#27ae60 calc(var(--score) * 3.6deg), #dcdcde 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    position: relative;
+}
+
+.score-circle::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.score-number {
+    position: relative;
+    z-index: 1;
+    font-weight: bold;
+    color: #23282d;
+}
+
+.score-label {
+    font-size: 12px;
+    color: #8c8f94;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.accessibility-issues,
+.accessibility-recommendations {
+    margin-top: 15px;
+}
+
+.accessibility-issues h4,
+.accessibility-recommendations h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #23282d;
+}
+
+.accessibility-issues ul,
+.accessibility-recommendations ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.accessibility-issues li,
+.accessibility-recommendations li {
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f1;
+    font-size: 13px;
+}
+
+.accessibility-issues li:last-child,
+.accessibility-recommendations li:last-child {
+    border-bottom: none;
+}
+
+.accessibility-issues li {
+    color: #d63638;
+}
+
+.accessibility-recommendations li {
+    color: #8c8f94;
+}
+
+/* ==========================================================================
+   Assembly Results
+   ========================================================================== */
+
+.ai-composer-result-container {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.ai-composer-result-summary h3 {
+    margin: 0 0 15px 0;
+    color: #23282d;
+}
+
+.ai-composer-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.ai-composer-stats .stat {
+    background: #f0f0f1;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.ai-composer-stats .stat strong {
+    display: block;
+    font-size: 20px;
+    color: #0073aa;
+    margin-bottom: 2px;
+}
+
+.ai-composer-plugin-usage h4 {
+    margin: 0 0 10px 0;
+    color: #23282d;
+}
+
+.ai-composer-plugin-usage ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ai-composer-plugin-usage li {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.ai-composer-plugin-usage li:last-child {
+    border-bottom: none;
+}
+
+.ai-composer-plugin-usage li.fallback {
+    background: #fdf2f2;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.plugin-name {
+    font-weight: 600;
+    margin-right: 10px;
+    min-width: 100px;
+}
+
+.block-name {
+    color: #8c8f94;
+    margin-right: 10px;
+}
+
+.fallback-badge {
+    background: #e74c3c;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Draft Creation Success
+   ========================================================================== */
+
+.ai-composer-draft-success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.ai-composer-draft-success h3 {
+    margin: 0 0 15px 0;
+    color: #155724;
+}
+
+.draft-details {
+    margin-bottom: 15px;
+}
+
+.draft-details p {
+    margin: 5px 0;
+    color: #155724;
+}
+
+.draft-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ==========================================================================
+   Detected Plugins Display
+   ========================================================================== */
+
+.ai-composer-plugin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.ai-composer-plugin-item.active {
+    border-color: #27ae60;
+    background: #f8fff8;
+}
+
+.ai-composer-plugin-item.inactive {
+    background: #f9f9f9;
+    color: #8c8f94;
+}
+
+.plugin-name {
+    font-weight: 600;
+}
+
+.plugin-stats {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.block-count {
+    color: #8c8f94;
+}
+
+.status.active {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.status.inactive {
+    color: #d63638;
+}
+
+/* ==========================================================================
+   Loading and Notifications
+   ========================================================================== */
+
+.ai-composer-loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    z-index: 1000000;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #333;
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    animation: ai-composer-spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+.loading-message {
+    font-weight: 600;
+}
+
+.ai-composer-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    max-width: 500px;
+    background: #fff;
+    border-left: 4px solid #0073aa;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000001;
+    animation: ai-composer-slide-in 0.3s ease;
+}
+
+.ai-composer-notification.success {
+    border-left-color: #27ae60;
+}
+
+.ai-composer-notification.error {
+    border-left-color: #d63638;
+}
+
+.ai-composer-notification.warning {
+    border-left-color: #f39c12;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.notification-message {
+    flex: 1;
+    color: #23282d;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #8c8f94;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.notification-close:hover {
+    color: #23282d;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .ai-composer-modal-content {
+        max-width: 98vw;
+        margin: 10px auto;
+    }
+    
+    .ai-composer-preview-sidebar {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-composer-modal-body {
+        flex-direction: column;
+    }
+    
+    .ai-composer-preview-sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #dcdcde;
+        max-height: 300px;
+    }
+    
+    .ai-composer-modal-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .ai-composer-responsive-controls {
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .ai-composer-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ai-composer-notification {
+        left: 10px;
+        right: 10px;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-composer-controls {
+        padding: 15px;
+    }
+    
+    .ai-composer-modal-header {
+        padding: 15px;
+    }
+    
+    .ai-composer-preview-container {
+        padding: 10px;
+    }
+    
+    .ai-composer-plugin-indicators,
+    .ai-composer-accessibility-report {
+        padding: 15px;
+    }
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes ai-composer-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes ai-composer-slide-in {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   High Contrast and Accessibility
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .ai-composer-btn {
+        border: 2px solid;
+    }
+    
+    .ai-composer-modal-content {
+        border: 2px solid #000;
+    }
+    
+    .ai-composer-indicator-item {
+        border: 1px solid;
+    }
+}
+
+/* Focus styles for accessibility */
+.ai-composer-btn:focus,
+.ai-composer-responsive-btn:focus,
+.ai-composer-modal-close:focus,
+.notification-close:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+
+/* Screen reader only text */
+.ai-composer-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ==========================================================================
+   Modal Open State
+   ========================================================================== */
+
+body.ai-composer-modal-open {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .ai-composer-modal,
+    .ai-composer-notification,
+    .ai-composer-loading {
+        display: none !important;
+    }
+}

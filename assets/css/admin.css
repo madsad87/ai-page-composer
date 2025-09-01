@@ -1,195 +1,493 @@
-/*!
- * Admin Interface Stylesheet - WordPress Admin Styling
+/*!n * AI Page Composer Admin Interface Stylesheet
  * 
- * This stylesheet enhances the WordPress admin interface for plugin settings pages, meta boxes,
- * and admin components. It provides consistent styling that integrates with WordPress admin design
- * patterns while adding custom enhancements for better user experience and accessibility.
+ * This stylesheet provides comprehensive styling for the AI Page Composer admin interface
+ * including settings pages, tabbed navigation, block preferences panel, and form elements.
+ * It integrates with WordPress admin design patterns while providing modern UI enhancements.
  * 
- * Modern WP Plugin Admin Styles
+ * AI Page Composer Admin Styles
  * Version: 1.0.0
  */
 
 /* ==========================================================================
-   Admin Page Styles
+   Main Admin Container
    ========================================================================== */
 
-.modern-wp-plugin-admin {
-    max-width: 800px;
+.ai-composer-settings {
+    max-width: 1200px;
+    margin: 0;
 }
 
-.modern-wp-plugin-admin .form-table th {
-    width: 200px;
-    padding: 20px 10px 20px 0;
-}
-
-.modern-wp-plugin-admin .form-table td {
-    padding: 15px 10px;
-}
-
-.modern-wp-plugin-admin .form-table input[type="text"],
-.modern-wp-plugin-admin .form-table textarea,
-.modern-wp-plugin-admin .form-table select {
-    width: 100%;
-    max-width: 400px;
-}
-
-.modern-wp-plugin-admin .form-table .description {
-    margin-top: 5px;
-    font-style: italic;
-    color: #666;
-}
-
-/* ==========================================================================
-   Settings Section Styles
-   ========================================================================== */
-
-.modern-wp-plugin-section {
-    background: #fff;
-    border: 1px solid #ccd0d4;
-    border-radius: 4px;
-    margin: 20px 0;
-    padding: 20px;
-}
-
-.modern-wp-plugin-section h3 {
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-/* ==========================================================================
-   Checkbox and Radio Styles
-   ========================================================================== */
-
-.modern-wp-plugin-checkbox,
-.modern-wp-plugin-radio {
+.ai-composer-settings .wrap h1 {
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 10px 0;
+    gap: 10px;
 }
 
-.modern-wp-plugin-checkbox input[type="checkbox"],
-.modern-wp-plugin-radio input[type="radio"] {
-    margin: 0;
-}
-
-.modern-wp-plugin-checkbox label,
-.modern-wp-plugin-radio label {
-    margin: 0;
-    font-weight: normal;
+.ai-composer-settings .wrap h1::before {
+    content: "🤖";
+    font-size: 24px;
 }
 
 /* ==========================================================================
-   Button Styles
+   Tabbed Navigation
    ========================================================================== */
 
-.modern-wp-plugin-button-primary {
-    background: #0073aa;
-    border-color: #0073aa;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
-    font-weight: 500;
-    transition: all 0.2s ease;
+.ai-composer-tabs {
+    margin-bottom: 0;
+    border-bottom: 1px solid #ccd0d4;
 }
 
-.modern-wp-plugin-button-primary:hover {
-    background: #005a87;
-    border-color: #005a87;
-    color: #fff;
-}
-
-.modern-wp-plugin-button-secondary {
-    background: #f7f7f7;
+.ai-composer-tabs .nav-tab {
+    position: relative;
+    padding: 12px 16px;
+    margin-right: 2px;
+    background: #f1f1f1;
     border: 1px solid #ccd0d4;
-    color: #2e4453;
-    padding: 8px 16px;
-    border-radius: 3px;
+    border-bottom: none;
+    color: #2c3338;
     text-decoration: none;
-    display: inline-block;
     font-weight: 500;
     transition: all 0.2s ease;
 }
 
-.modern-wp-plugin-button-secondary:hover {
+.ai-composer-tabs .nav-tab:hover {
     background: #fff;
-    border-color: #999;
-    color: #2e4453;
+    color: #0073aa;
+}
+
+.ai-composer-tabs .nav-tab.nav-tab-active {
+    background: #fff;
+    color: #0073aa;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
 }
 
 /* ==========================================================================
-   Notice Styles
+   Tab Content Panels
    ========================================================================== */
 
-.modern-wp-plugin-notice {
+.ai-composer-tab-content {
+    border: 1px solid #ccd0d4;
+    border-top: none;
+    padding: 20px;
+    min-height: 400px;
+    /* Remove background override to inherit WordPress admin background */
+}
+
+.ai-composer-panel {
+    display: none;
+}
+
+.ai-composer-panel.active {
+    display: block;
+}
+
+.ai-composer-panel h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0073aa;
+    color: #0073aa;
+}
+
+.ai-composer-panel h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #2c3338;
+}
+
+/* ==========================================================================
+   Form Elements
+   ========================================================================== */
+
+.ai-composer-settings .form-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    /* Remove background override to inherit WordPress admin background */
+}
+
+.ai-composer-settings .form-table th {
+    width: 220px;
+    padding: 20px 10px 20px 0;
+    font-weight: 600;
+    vertical-align: top;
+}
+
+.ai-composer-settings .form-table td {
+    padding: 20px 10px;
+    vertical-align: top;
+}
+
+.ai-composer-settings input[type="text"],
+.ai-composer-settings input[type="password"],
+.ai-composer-settings input[type="email"],
+.ai-composer-settings input[type="url"],
+.ai-composer-settings input[type="number"],
+.ai-composer-settings textarea,
+.ai-composer-settings select {
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: border-color 0.2s ease;
+}
+
+.ai-composer-settings input[type="text"]:focus,
+.ai-composer-settings input[type="password"]:focus,
+.ai-composer-settings input[type="email"]:focus,
+.ai-composer-settings input[type="url"]:focus,
+.ai-composer-settings input[type="number"]:focus,
+.ai-composer-settings textarea:focus,
+.ai-composer-settings select:focus {
+    border-color: #0073aa;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.1);
+    outline: none;
+}
+
+.ai-composer-settings .regular-text {
+    width: 350px;
+    max-width: 100%;
+}
+
+.ai-composer-settings .small-text {
+    width: 80px;
+}
+
+/* ==========================================================================
+   Range Sliders
+   ========================================================================== */
+
+.range-input {
+    width: 200px !important;
+    margin-right: 10px;
+}
+
+.range-value {
+    display: inline-block;
+    min-width: 40px;
+    padding: 4px 8px;
+    background: #f0f0f1;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ==========================================================================
+   Block Preferences Panel
+   ========================================================================== */
+
+.plugin-detection-status {
+    margin-bottom: 30px;
+}
+
+.plugin-detection-status .wp-list-table {
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.plugin-detection-status .wp-list-table th,
+.plugin-detection-status .wp-list-table td {
     padding: 12px;
-    margin: 15px 0;
-    border-left: 4px solid #0073aa;
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+    vertical-align: middle;
 }
 
-.modern-wp-plugin-notice.notice-success {
-    border-left-color: #46b450;
+.status-indicator {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.modern-wp-plugin-notice.notice-warning {
-    border-left-color: #ffb900;
+.status-active {
+    background: #d1e7dd;
+    color: #0f5132;
 }
 
-.modern-wp-plugin-notice.notice-error {
-    border-left-color: #dc3232;
+.status-inactive {
+    background: #f8d7da;
+    color: #842029;
 }
 
-.modern-wp-plugin-notice p {
-    margin: 0;
+.plugin-active {
+    background: rgba(209, 231, 221, 0.1);
+}
+
+.plugin-inactive {
+    background: rgba(248, 215, 218, 0.1);
+    opacity: 0.7;
+}
+
+.priority-slider {
+    width: 100px !important;
+    margin-right: 8px;
+}
+
+.priority-value {
+    display: inline-block;
+    min-width: 20px;
+    font-weight: 600;
+    color: #0073aa;
+}
+
+.priority-disabled {
+    color: #8c8f94;
+    font-style: italic;
+}
+
+.priority-changed {
+    background: rgba(0, 115, 170, 0.1);
+    transition: background-color 0.3s ease;
 }
 
 /* ==========================================================================
-   Meta Box Styles
+   Section Mappings
    ========================================================================== */
 
-.modern-wp-plugin-meta-box .form-table {
-    margin: 0;
+.section-mappings .form-table {
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
 }
 
-.modern-wp-plugin-meta-box .form-table th {
-    width: 150px;
-    padding: 10px 0;
+.section-mappings .form-table th {
+    background: #f6f7f7;
+    border-bottom: 1px solid #c3c4c7;
 }
 
-.modern-wp-plugin-meta-box .form-table td {
-    padding: 10px 0;
-}
-
-.modern-wp-plugin-meta-box input[type="text"],
-.modern-wp-plugin-meta-box textarea {
-    width: 100%;
+.section-mappings .form-table tr:not(:last-child) td {
+    border-bottom: 1px solid #f0f0f1;
 }
 
 /* ==========================================================================
-   Responsive Admin Styles
+   Custom Block Types
    ========================================================================== */
+
+.custom-block-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 15px;
+    background: #f6f7f7;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.custom-block-row input[type="text"] {
+    flex: 1;
+}
+
+.remove-custom-block {
+    background: #dc3232 !important;
+    border-color: #dc3232 !important;
+    color: #fff !important;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.remove-custom-block:hover {
+    background: #a02622 !important;
+    border-color: #a02622 !important;
+}
+
+/* ==========================================================================
+   Cost Management Dashboard
+   ========================================================================== */
+
+.cost-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.cost-card {
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Remove background override to inherit WordPress admin background */
+}
+
+.cost-card h4 {
+    margin: 0 0 10px 0;
+    color: #8c8f94;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cost-card .amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3338;
+    margin: 0;
+}
+
+.cost-card.over-budget .amount {
+    color: #dc3232;
+}
+
+.cost-card.warning .amount {
+    color: #ffb900;
+}
+
+/* ==========================================================================
+   API Status Results
+   ========================================================================== */
+
+.api-status-results {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.api-status-results p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.api-status-results .status-success {
+    color: #46b450;
+    font-weight: 600;
+}
+
+.api-status-results .status-error {
+    color: #dc3232;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Field Validation States
+   ========================================================================== */
+
+.ai-composer-settings input.error,
+.ai-composer-settings select.error,
+.ai-composer-settings textarea.error {
+    border-color: #dc3232;
+    box-shadow: 0 0 0 2px rgba(220, 50, 50, 0.1);
+}
+
+.field-error {
+    display: block;
+    color: #dc3232;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.field-success {
+    display: block;
+    color: #46b450;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+.ai-composer-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.ai-composer-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .ai-composer-settings {
+        max-width: 100%;
+    }
+    
+    .cost-dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
 
 @media (max-width: 782px) {
-    .modern-wp-plugin-admin .form-table th,
-    .modern-wp-plugin-admin .form-table td {
+    .ai-composer-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .ai-composer-tabs .nav-tab {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        min-width: 0;
+    }
+    
+    .ai-composer-settings .form-table th,
+    .ai-composer-settings .form-table td {
         display: block;
         width: 100%;
         padding: 10px 0;
     }
     
-    .modern-wp-plugin-admin .form-table th {
+    .ai-composer-settings .form-table th {
         border-bottom: none;
+        font-weight: 600;
+        padding-bottom: 5px;
     }
     
-    .modern-wp-plugin-admin .form-table input[type="text"],
-    .modern-wp-plugin-admin .form-table textarea,
-    .modern-wp-plugin-admin .form-table select {
-        max-width: 100%;
+    .ai-composer-settings .regular-text {
+        width: 100%;
+    }
+    
+    .custom-block-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .range-input {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+    
+    .cost-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .ai-composer-tab-content {
+        padding: 15px;
+    }
+    
+    .ai-composer-tabs .nav-tab {
+        font-size: 11px;
+        padding: 6px;
     }
 }
 
@@ -197,20 +495,51 @@
    Dark Mode Support
    ========================================================================== */
 
-@media (prefers-color-scheme: dark) {
-    .modern-wp-plugin-section {
-        background: #1e1e1e;
-        border-color: #3c3c3c;
-        color: #fff;
+/* Dark mode styles removed to use WordPress default colors */
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+.ai-composer-settings *:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+
+.ai-composer-settings .nav-tab:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: -2px;
+}
+
+.screen-reader-text {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .ai-composer-tabs,
+    .ai-composer-settings input[type="submit"],
+    .ai-composer-settings button {
+        display: none !important;
     }
     
-    .modern-wp-plugin-section h3 {
-        border-bottom-color: #3c3c3c;
-        color: #fff;
+    .ai-composer-panel {
+        display: block !important;
     }
     
-    .modern-wp-plugin-notice {
-        background: #1e1e1e;
-        color: #fff;
+    .ai-composer-tab-content {
+        border: none;
+        padding: 0;
     }
 }

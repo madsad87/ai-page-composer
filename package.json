@@ -1,7 +1,7 @@
 {
-  "name": "modern-wp-plugin",
+  "name": "ai-page-composer",
   "version": "1.0.0",
-  "description": "Modern WordPress Plugin Template following industry best practices",
+  "description": "AI Page Composer - WordPress plugin for AI-powered content generation and page composition",
   "main": "assets/js/script.js",
   "scripts": {
     "build": "webpack --mode=production",
@@ -10,7 +10,7 @@
     "lint:js": "eslint assets/js/**/*.js",
     "fix:js": "eslint assets/js/**/*.js --fix",
     "autoprefixer": "postcss assets/css/style.css --use autoprefixer -o assets/css/style.css",
-    "makepot": "wp i18n make-pot . languages/modern-wp-plugin.pot --exclude=node_modules,vendor,tests",
+    "makepot": "wp i18n make-pot . languages/ai-page-composer.pot --exclude=node_modules,vendor,tests",
     "zip": "node scripts/makezip.js",
     "watch": "concurrently \"npm run dev\" \"npm run lint:css -- --watch\"",
     "test": "jest",
@@ -19,8 +19,9 @@
   "keywords": [
     "wordpress",
     "plugin",
-    "modern",
-    "template",
+    "ai",
+    "content-generation",
+    "page-composer",
     "gutenberg",
     "blocks"
   ],

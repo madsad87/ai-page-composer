@@ -1,11 +1,11 @@
 /*!
- * Admin Interface JavaScript - WordPress Admin Enhancement
+ * AI Page Composer Admin Interface JavaScript
  * 
- * This file provides interactive functionality for WordPress admin pages including form validation,
- * settings management, media uploaders, and admin-specific user interface enhancements. It integrates
- * with WordPress admin APIs and follows admin JavaScript best practices for optimal user experience.
+ * This file provides interactive functionality for AI Page Composer admin pages including
+ * general admin enhancements, dashboard widgets, and admin-specific user interface features.
+ * It integrates with WordPress admin APIs and complements the settings-specific JavaScript.
  * 
- * Modern WP Plugin Admin JavaScript
+ * AI Page Composer Admin JavaScript
  * Version: 1.0.0
  */
 
@@ -13,18 +13,18 @@
     'use strict';
 
     /**
-     * Admin functionality object
+     * AI Page Composer Admin functionality object
      */
-    const ModernWPPluginAdmin = {
+    const AIComposerAdmin = {
         
         /**
          * Initialize admin functionality
          */
         init: function() {
             this.bindEvents();
-            this.initTooltips();
-            this.initFormValidation();
-            console.log('Modern WP Plugin Admin initialized');
+            this.initDashboardWidgets();
+            this.initQuickActions();
+            console.log('AI Page Composer Admin initialized');
         },
 
         /**
@@ -33,18 +33,17 @@
         bindEvents: function() {
             $(document).ready(this.onReady.bind(this));
             
-            // Settings form handling
-            $('#modern-wp-plugin-settings-form').on('submit', this.validateForm.bind(this));
+            // Quick generation button in post editor
+            $(document).on('click', '.ai-composer-quick-generate', this.quickGenerate.bind(this));
             
-            // Tab navigation
-            $('.modern-wp-plugin-tab').on('click', this.switchTab.bind(this));
+            // Cost tracking updates
+            $(document).on('click', '.refresh-cost-stats', this.refreshCostStats.bind(this));
             
-            // Reset to defaults
-            $('.modern-wp-plugin-reset').on('click', this.resetToDefaults.bind(this));
+            // Plugin status checks
+            $(document).on('click', '.check-api-status', this.checkApiStatus.bind(this));
             
-            // Import/Export functionality
-            $('.modern-wp-plugin-export').on('click', this.exportSettings.bind(this));
-            $('.modern-wp-plugin-import').on('change', this.importSettings.bind(this));
+            // Admin notices dismiss
+            $(document).on('click', '.ai-composer-notice .notice-dismiss', this.dismissNotice.bind(this));
         },
 
         /**
@@ -52,309 +51,183 @@
          */
         onReady: function() {
             this.initMetaBoxes();
-            this.initColorPickers();
-            this.initMediaUploaders();
-            this.checkDependencies();
+            this.checkPluginStatus();
+            this.initTooltips();
         },
 
         /**
-         * Initialize meta boxes
+         * Initialize dashboard widgets
+         */
+        initDashboardWidgets: function() {
+            // Add AI Composer dashboard widget if on dashboard
+            if ($('#dashboard-widgets').length) {
+                this.loadDashboardWidget();
+            }
+        },
+
+        /**
+         * Load dashboard widget content
+         */
+        loadDashboardWidget: function() {
+            const $widget = $('#ai-composer-dashboard-widget');
+            if (!$widget.length) return;
+            
+            this.ajaxRequest('get_dashboard_stats', {}, function(response) {
+                if (response.success) {
+                    $widget.find('.inside').html(response.data.html);
+                }
+            });
+        },
+
+        /**
+         * Initialize meta boxes for post editor
          */
         initMetaBoxes: function() {
-            // Make meta boxes sortable
-            if (typeof postboxes !== 'undefined') {
-                postboxes.add_postbox_toggles('modern-wp-plugin');
-            }
-            
-            // Add custom meta box functionality
-            $('.modern-wp-plugin-meta-box').each(function() {
-                const $metaBox = $(this);
-                const $toggle = $metaBox.find('.handlediv');
-                
-                $toggle.on('click', function() {
-                    $metaBox.find('.inside').slideToggle();
-                });
-            });
-        },
-
-        /**
-         * Initialize color pickers
-         */
-        initColorPickers: function() {
-            if ($.fn.wpColorPicker) {
-                $('.modern-wp-plugin-color-picker').wpColorPicker({
-                    change: function(event, ui) {
-                        ModernWPPluginAdmin.previewColorChange($(this), ui.color.toString());
-                    }
-                });
+            // AI Composer meta box in post editor
+            const $metaBox = $('#ai-composer-meta-box');
+            if ($metaBox.length) {
+                this.initPostEditorIntegration();
             }
         },
 
         /**
-         * Initialize media uploaders
+         * Initialize post editor integration
          */
-        initMediaUploaders: function() {
-            $('.modern-wp-plugin-upload-button').on('click', function(e) {
-                e.preventDefault();
-                
-                const $button = $(this);
-                const $input = $button.siblings('input[type="text"]');
-                const $preview = $button.siblings('.modern-wp-plugin-preview');
-                
-                const mediaUploader = wp.media({
-                    title: 'Select Image',
-                    button: {
-                        text: 'Use this image'
-                    },
-                    multiple: false
-                });
-                
-                mediaUploader.on('select', function() {
-                    const attachment = mediaUploader.state().get('selection').first().toJSON();
-                    $input.val(attachment.url);
-                    $preview.html('<img src="' + attachment.url + '" style="max-width: 200px;" />');
-                });
-                
-                mediaUploader.open();
-            });
-        },
-
-        /**
-         * Initialize tooltips
-         */
-        initTooltips: function() {
-            $('.modern-wp-plugin-tooltip').each(function() {
-                const $tooltip = $(this);
-                const title = $tooltip.attr('title');
-                
-                $tooltip.removeAttr('title').on('mouseenter', function() {
-                    const $tip = $('<div class="modern-wp-plugin-tip">' + title + '</div>');
-                    $('body').append($tip);
-                    
-                    const pos = $tooltip.offset();
-                    $tip.css({
-                        top: pos.top - $tip.outerHeight() - 5,
-                        left: pos.left + ($tooltip.outerWidth() / 2) - ($tip.outerWidth() / 2)
-                    });
-                }).on('mouseleave', function() {
-                    $('.modern-wp-plugin-tip').remove();
-                });
-            });
-        },
-
-        /**
-         * Initialize form validation
-         */
-        initFormValidation: function() {
-            // Real-time validation
-            $('input[data-validate]').on('blur', function() {
-                ModernWPPluginAdmin.validateField($(this));
-            });
-            
-            // Number field constraints
-            $('input[type="number"]').on('input', function() {
-                const $input = $(this);
-                const min = parseInt($input.attr('min'));
-                const max = parseInt($input.attr('max'));
-                const val = parseInt($input.val());
-                
-                if (!isNaN(min) && val < min) {
-                    $input.val(min);
-                }
-                if (!isNaN(max) && val > max) {
-                    $input.val(max);
-                }
-            });
-        },
-
-        /**
-         * Validate individual field
-         */
-        validateField: function($field) {
-            const validateType = $field.data('validate');
-            const value = $field.val();
-            let isValid = true;
-            let message = '';
-            
-            switch (validateType) {
-                case 'email':
-                    isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                    message = 'Please enter a valid email address';
-                    break;
-                case 'url':
-                    isValid = /^https?:\/\/.+/.test(value) || value === '';
-                    message = 'Please enter a valid URL';
-                    break;
-                case 'required':
-                    isValid = value.trim() !== '';
-                    message = 'This field is required';
-                    break;
+        initPostEditorIntegration: function() {
+            // Add AI Composer button to post editor toolbar
+            if (typeof wp !== 'undefined' && wp.data) {
+                this.addEditorToolbarButton();
             }
             
-            this.showFieldValidation($field, isValid, message);
-            return isValid;
+            // Bind content insertion handlers
+            $(document).on('click', '.insert-content', this.insertGeneratedContent.bind(this));
+            $(document).on('click', '.preview-content', this.toggleContentPreview.bind(this));
         },
-
+        
         /**
-         * Show field validation result
+         * Insert generated content into the editor
          */
-        showFieldValidation: function($field, isValid, message) {
-            $field.removeClass('field-valid field-invalid');
-            $field.siblings('.field-validation').remove();
+        insertGeneratedContent: function(e) {
+            e.preventDefault();
             
-            if (isValid) {
-                $field.addClass('field-valid');
+            const $button = $(e.target);
+            const contentData = JSON.parse($button.data('content'));
+            
+            if (typeof wp !== 'undefined' && wp.data && wp.blocks) {
+                // For Gutenberg editor
+                this.insertIntoGutenberg(contentData);
             } else {
-                $field.addClass('field-invalid');
-                $field.after('<span class="field-validation field-error">' + message + '</span>');
-            }
-        },
-
-        /**
-         * Validate entire form
-         */
-        validateForm: function(e) {
-            let isValid = true;
-            
-            $('input[data-validate]').each(function() {
-                if (!ModernWPPluginAdmin.validateField($(this))) {
-                    isValid = false;
-                }
-            });
-            
-            if (!isValid) {
-                e.preventDefault();
-                this.showNotice('Please correct the errors below', 'error');
-                return false;
+                // For classic editor
+                this.insertIntoClassicEditor(contentData);
             }
             
-            return true;
+            $button.text('✓ Inserted!').prop('disabled', true);
+            setTimeout(() => {
+                $button.text('Insert into Editor').prop('disabled', false);
+            }, 2000);
         },
-
+        
         /**
-         * Switch between tabs
+         * Insert content into Gutenberg editor
          */
-        switchTab: function(e) {
-            e.preventDefault();
-            
-            const $tab = $(e.currentTarget);
-            const target = $tab.data('target');
-            
-            // Update tab navigation
-            $('.modern-wp-plugin-tab').removeClass('nav-tab-active');
-            $tab.addClass('nav-tab-active');
-            
-            // Show/hide tab content
-            $('.modern-wp-plugin-tab-content').hide();
-            $(target).show();
-            
-            // Save active tab
-            localStorage.setItem('modern-wp-plugin-active-tab', target);
-        },
-
-        /**
-         * Reset settings to defaults
-         */
-        resetToDefaults: function(e) {
-            e.preventDefault();
-            
-            if (!confirm('Are you sure you want to reset all settings to defaults? This cannot be undone.')) {
-                return;
-            }
-            
-            this.ajaxRequest('reset_to_defaults', {}, function(response) {
-                if (response.success) {
-                    location.reload();
+        insertIntoGutenberg: function(contentData) {
+            try {
+                const { dispatch, select } = wp.data;
+                const blocks = wp.blocks.parse(contentData.raw || '');
+                
+                if (blocks.length > 0) {
+                    // Insert blocks at the end
+                    const currentBlocks = select('core/block-editor').getBlocks();
+                    const insertIndex = currentBlocks.length;
+                    
+                    dispatch('core/block-editor').insertBlocks(blocks, insertIndex);
+                    
+                    this.showNotice('Content inserted into editor successfully!', 'success');
                 } else {
-                    ModernWPPluginAdmin.showNotice('Failed to reset settings', 'error');
+                    throw new Error('No valid blocks to insert');
                 }
-            });
+            } catch (error) {
+                console.error('Gutenberg insertion failed:', error);
+                this.showNotice('Failed to insert content into Gutenberg editor', 'error');
+            }
         },
-
+        
         /**
-         * Export settings
+         * Insert content into classic editor
          */
-        exportSettings: function(e) {
+        insertIntoClassicEditor: function(contentData) {
+            try {
+                const editor = window.tinymce && tinymce.get('content');
+                
+                if (editor && !editor.isHidden()) {
+                    // TinyMCE is active
+                    const content = contentData.html || contentData.content || '';
+                    editor.insertContent('<br>' + content);
+                    this.showNotice('Content inserted into editor successfully!', 'success');
+                } else {
+                    // Text mode
+                    const textarea = document.getElementById('content');
+                    if (textarea) {
+                        const content = contentData.content || contentData.html || '';
+                        textarea.value += '\n\n' + content;
+                        this.showNotice('Content inserted into editor successfully!', 'success');
+                    } else {
+                        throw new Error('Editor not found');
+                    }
+                }
+            } catch (error) {
+                console.error('Classic editor insertion failed:', error);
+                this.showNotice('Failed to insert content into classic editor', 'error');
+            }
+        },
+        
+        /**
+         * Toggle content preview
+         */
+        toggleContentPreview: function(e) {
             e.preventDefault();
             
-            this.ajaxRequest('export_settings', {}, function(response) {
-                if (response.success) {
-                    const dataStr = JSON.stringify(response.data, null, 2);
-                    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-                    
-                    const exportFileDefaultName = 'modern-wp-plugin-settings.json';
-                    
-                    const linkElement = document.createElement('a');
-                    linkElement.setAttribute('href', dataUri);
-                    linkElement.setAttribute('download', exportFileDefaultName);
-                    linkElement.click();
-                } else {
-                    ModernWPPluginAdmin.showNotice('Failed to export settings', 'error');
-                }
-            });
-        },
-
-        /**
-         * Import settings
-         */
-        importSettings: function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const $button = $(e.target);
+            const $preview = $button.closest('.ai-composer-actions').siblings('.ai-composer-preview');
             
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const settings = JSON.parse(e.target.result);
-                    
-                    ModernWPPluginAdmin.ajaxRequest('import_settings', {
-                        settings: settings
-                    }, function(response) {
-                        if (response.success) {
-                            ModernWPPluginAdmin.showNotice('Settings imported successfully', 'success');
-                            setTimeout(function() {
-                                location.reload();
-                            }, 1000);
-                        } else {
-                            ModernWPPluginAdmin.showNotice('Failed to import settings', 'error');
-                        }
-                    });
-                } catch (error) {
-                    ModernWPPluginAdmin.showNotice('Invalid settings file', 'error');
-                }
+            if ($preview.is(':visible')) {
+                $preview.slideUp();
+                $button.text('Preview Content');
+            } else {
+                $preview.slideDown();
+                $button.text('Hide Preview');
+            }
+        },
+        
+        /**
+         * Escape HTML for safe insertion
+         */
+        escapeHtml: function(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
             };
-            reader.readAsText(file);
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         },
-
-        /**
-         * Preview color changes
-         */
-        previewColorChange: function($input, color) {
-            const target = $input.data('preview-target');
-            if (target) {
-                $(target).css('color', color);
-            }
-        },
-
-        /**
-         * Check plugin dependencies
-         */
-        checkDependencies: function() {
-            // Check if ACF is active
-            this.ajaxRequest('check_dependencies', {}, function(response) {
-                if (response.data && response.data.missing_dependencies) {
-                    const dependencies = response.data.missing_dependencies;
-                    let message = 'Missing dependencies: ' + dependencies.join(', ');
-                    ModernWPPluginAdmin.showNotice(message, 'warning');
-                }
-            });
-        },
-
+        
         /**
          * Show admin notice
          */
-        showNotice: function(message, type = 'info') {
-            const $notice = $('<div class="notice notice-' + type + ' is-dismissible"><p>' + message + '</p></div>');
-            $('.wrap h1').after($notice);
+        showNotice: function(message, type) {
+            type = type || 'info';
+            const noticeClass = 'notice notice-' + type;
+            const $notice = $('<div class="' + noticeClass + ' is-dismissible"><p>' + message + '</p></div>');
+            
+            // Insert after h1 if on admin page
+            if ($('.wrap h1').length) {
+                $('.wrap h1').after($notice);
+            } else {
+                // Fallback to body
+                $('body').prepend($notice);
+            }
             
             // Auto-dismiss after 5 seconds
             setTimeout(function() {
@@ -363,15 +236,309 @@
         },
 
         /**
-         * AJAX helper for admin
+         * Add toolbar button to block editor
+         */
+        addEditorToolbarButton: function() {
+            // This would integrate with Gutenberg editor
+            // For now, we'll add a button to the post editor meta box
+            const $metaBox = $('#ai-composer-meta-box .inside');
+            if ($metaBox.length) {
+                const buttonHtml = `
+                    <p>
+                        <button type="button" class="button button-primary ai-composer-quick-generate">
+                            🤖 Generate with AI
+                        </button>
+                        <button type="button" class="button button-secondary check-api-status">
+                            Check API Status
+                        </button>
+                    </p>
+                    <div id="ai-composer-generation-status"></div>
+                `;
+                $metaBox.html(buttonHtml);
+            }
+        },
+
+        /**
+         * Initialize quick actions
+         */
+        initQuickActions: function() {
+            // Add quick action menu items
+            this.addQuickActionMenuItems();
+        },
+
+        /**
+         * Add quick action menu items to admin bar
+         */
+        addQuickActionMenuItems: function() {
+            const $adminBar = $('#wpadminbar');
+            if ($adminBar.length) {
+                // This would add items to the WordPress admin bar
+                // Implementation depends on specific requirements
+            }
+        },
+
+        /**
+         * Handle quick generation
+         */
+        quickGenerate: function(e) {
+            e.preventDefault();
+            
+            const $button = $(e.target);
+            const postId = $('#post_ID').val() || 0;
+            
+            if (!postId) {
+                this.showNotice('Please save the post first', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            $button.prop('disabled', true).text('Generating...');
+            
+            const $status = $('#ai-composer-generation-status');
+            $status.html('<div class="ai-composer-loading">🤖 Generating content with AI...</div>');
+            
+            this.ajaxRequest('quick_generate_content', {
+                post_id: postId
+            }, function(response) {
+                $button.prop('disabled', false).text('🤖 Generate with AI');
+                
+                if (response.success) {
+                    const data = response.data;
+                    
+                    // Display success message with metadata
+                    let statusHtml = '<div class="notice notice-success"><p><strong>Content generated successfully!</strong></p>';
+                    
+                    if (data.metadata) {
+                        statusHtml += '<p class="description">';
+                        statusHtml += 'Generated ' + data.metadata.word_count + ' words in ' + data.metadata.processing_time_ms + 'ms. ';
+                        statusHtml += 'Cost: $' + parseFloat(data.metadata.cost_usd).toFixed(4);
+                        statusHtml += '</p>';
+                    }
+                    
+                    statusHtml += '</div>';
+                    
+                    // Add action buttons
+                    statusHtml += '<div class="ai-composer-actions" style="margin-top: 10px;">';
+                    statusHtml += '<button type="button" class="button button-primary insert-content" data-content="' + 
+                                 AIComposerAdmin.escapeHtml(JSON.stringify(data.block_json)) + '">Insert into Editor</button> ';
+                    statusHtml += '<button type="button" class="button button-secondary preview-content">Preview Content</button>';
+                    statusHtml += '</div>';
+                    
+                    // Add preview area (hidden by default)
+                    statusHtml += '<div class="ai-composer-preview" style="display: none; margin-top: 15px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9;">';
+                    statusHtml += '<h4>Generated Content Preview:</h4>';
+                    statusHtml += '<div class="preview-content">' + (data.html || data.content) + '</div>';
+                    statusHtml += '</div>';
+                    
+                    $status.html(statusHtml);
+                    
+                } else {
+                    const errorMsg = response.data?.message || 'Generation failed';
+                    let errorHtml = '<div class="notice notice-error"><p><strong>Generation failed:</strong> ' + errorMsg + '</p></div>';
+                    
+                    // Add configure link if APIs not configured
+                    if (response.data?.action === 'configure_apis') {
+                        const settingsUrl = (typeof aiComposerAdmin !== 'undefined' && aiComposerAdmin.settingsUrl) ? aiComposerAdmin.settingsUrl :
+                                           (typeof aiComposerAdminBase !== 'undefined' && aiComposerAdminBase.settingsUrl) ? aiComposerAdminBase.settingsUrl :
+                                           'edit.php?page=ai-composer';
+                        errorHtml += '<div style="margin-top: 10px;">';
+                        errorHtml += '<a href="' + settingsUrl + '" class="button button-secondary">Configure API Keys</a>';
+                        errorHtml += '</div>';
+                    }
+                    
+                    $status.html(errorHtml);
+                }
+            }.bind(this));
+        },
+
+        /**
+         * Check API status
+         */
+        checkApiStatus: function(e) {
+            e.preventDefault();
+            
+            const $button = $(e.target);
+            $button.prop('disabled', true).text('Checking...');
+            
+            this.ajaxRequest('check_api_status', {}, function(response) {
+                $button.prop('disabled', false).text('Test API Connections');
+                
+                if (response.success) {
+                    const status = response.data;
+                    let statusHtml = '<div class="api-status-results">';
+                    
+                    Object.keys(status).forEach(api => {
+                        const isOnline = status[api];
+                        const statusClass = isOnline ? 'success' : 'error';
+                        const statusText = isOnline ? 'Online' : 'Offline';
+                        statusHtml += `<p><strong>${api}:</strong> <span class="status-${statusClass}">${statusText}</span></p>`;
+                    });
+                    
+                    statusHtml += '</div>';
+                    $('#api-status-results').html(statusHtml);
+                } else {
+                    AIComposerAdmin.showNotice('Failed to check API status', 'error');
+                }
+            });
+        },
+
+        /**
+         * Refresh cost statistics
+         */
+        refreshCostStats: function(e) {
+            e.preventDefault();
+            
+            const $button = $(e.target);
+            $button.prop('disabled', true).text('Refreshing...');
+            
+            this.ajaxRequest('refresh_cost_stats', {}, function(response) {
+                $button.prop('disabled', false).text('Refresh Stats');
+                
+                if (response.success) {
+                    // Update cost display elements
+                    $('.daily-cost-amount').text('$' + response.data.daily_costs);
+                    $('.monthly-cost-amount').text('$' + response.data.monthly_costs);
+                    AIComposerAdmin.showNotice('Cost statistics updated', 'success');
+                } else {
+                    AIComposerAdmin.showNotice('Failed to refresh cost statistics', 'error');
+                }
+            });
+        },
+
+        /**
+         * Check overall plugin status
+         */
+        checkPluginStatus: function() {
+            // Check if we're on AI Composer admin pages
+            if (!$('.ai-composer-admin').length) {
+                return;
+            }
+            
+            this.ajaxRequest('get_plugin_status', {}, function(response) {
+                if (response.success) {
+                    const status = response.data;
+                    
+                    // Show warnings if APIs not configured
+                    if (!status.api_configured) {
+                        AIComposerAdmin.showNotice(
+                            'API keys are not configured. <a href="edit.php?page=ai-composer">Configure now</a>',
+                            'warning'
+                        );
+                    }
+                    
+                    // Update status indicators
+                    $('.api-status-indicator').removeClass('status-online status-offline')
+                        .addClass(status.api_configured ? 'status-online' : 'status-offline');
+                }
+            });
+        },
+
+        /**
+         * Initialize tooltips
+         */
+        initTooltips: function() {
+            // Simple tooltip implementation
+            $('.ai-composer-tooltip').each(function() {
+                const $element = $(this);
+                const title = $element.attr('title') || $element.data('tooltip');
+                
+                if (title) {
+                    $element.removeAttr('title').on('mouseenter', function() {
+                        const $tooltip = $(`<div class="ai-composer-tooltip-content">${title}</div>`);
+                        $('body').append($tooltip);
+                        
+                        const pos = $element.offset();
+                        $tooltip.css({
+                            position: 'absolute',
+                            top: pos.top - $tooltip.outerHeight() - 8,
+                            left: pos.left + ($element.outerWidth() / 2) - ($tooltip.outerWidth() / 2),
+                            zIndex: 9999
+                        });
+                    }).on('mouseleave', function() {
+                        $('.ai-composer-tooltip-content').remove();
+                    });
+                }
+            });
+        },
+
+        /**
+         * Dismiss admin notice
+         */
+        dismissNotice: function(e) {
+            const $notice = $(e.target).closest('.notice');
+            const noticeId = $notice.data('notice-id');
+            
+            if (noticeId) {
+                // Store dismissed notice to prevent showing again
+                this.ajaxRequest('dismiss_notice', {
+                    notice_id: noticeId
+                });
+            }
+        },
+
+        /**
+         * Show admin notice
+         */
+        showNotice: function(message, type = 'info', dismissible = true) {
+            const dismissClass = dismissible ? ' is-dismissible' : '';
+            const $notice = $(`
+                <div class="notice notice-${type}${dismissClass}">
+                    <p>${message}</p>
+                    ${dismissible ? '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>' : ''}
+                </div>
+            `);
+            
+            // Insert notice at the top of the page
+            if ($('.wrap h1').length) {
+                $('.wrap h1').after($notice);
+            } else {
+                $('#wpbody-content').prepend($notice);
+            }
+            
+            // Handle dismiss button
+            if (dismissible) {
+                $notice.on('click', '.notice-dismiss', function() {
+                    $notice.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                });
+            }
+            
+            // Auto-dismiss success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    $notice.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+            }
+        },
+
+        /**
+         * AJAX helper for admin requests
          */
         ajaxRequest: function(action, data, callback) {
+            // Check if required globals are available
+            const ajaxUrl = (typeof ajaxurl !== 'undefined') ? ajaxurl : 
+                           (typeof aiComposerAdmin !== 'undefined' && aiComposerAdmin.ajaxUrl) ? aiComposerAdmin.ajaxUrl : 
+                           (typeof aiComposerAdminBase !== 'undefined' && aiComposerAdminBase.ajaxUrl) ? aiComposerAdminBase.ajaxUrl :
+                           '/wp-admin/admin-ajax.php';
+            
+            const nonce = (typeof aiComposerAdmin !== 'undefined' && aiComposerAdmin.nonce) ? aiComposerAdmin.nonce :
+                         (typeof aiComposerAdminBase !== 'undefined' && aiComposerAdminBase.nonce) ? aiComposerAdminBase.nonce : '';
+            
+            if (!nonce) {
+                console.error('AI Composer: No nonce available for AJAX request');
+                this.showNotice('Security error: Please refresh the page and try again.', 'error');
+                return;
+            }
+            
             $.ajax({
-                url: ajaxurl,
+                url: ajaxUrl,
                 type: 'POST',
                 data: {
-                    action: 'modern_wp_plugin_' + action,
-                    nonce: ModernWPPluginAdmin.nonce,
+                    action: 'ai_composer_' + action,
+                    nonce: nonce,
                     ...data
                 },
                 success: function(response) {
@@ -380,17 +547,66 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Admin AJAX Error:', error);
-                    ModernWPPluginAdmin.showNotice('An error occurred. Please try again.', 'error');
+                    console.error('AI Composer Admin AJAX Error:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText,
+                        url: ajaxUrl,
+                        action: 'ai_composer_' + action,
+                        data: data
+                    });
+                    
+                    let errorMessage = 'An error occurred. Please try again.';
+                    
+                    // Try to parse the response for more specific error
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response && response.data && response.data.message) {
+                            errorMessage = response.data.message;
+                        } else if (response && response.message) {
+                            errorMessage = response.message;
+                        }
+                    } catch (parseError) {
+                        // Ignore parsing errors, use status-based messages
+                        if (xhr.status === 0) {
+                            errorMessage = 'Network error. Please check your internet connection.';
+                        } else if (xhr.status === 403) {
+                            errorMessage = 'Security error. Please refresh the page and try again.';
+                        } else if (xhr.status === 404) {
+                            errorMessage = 'AJAX endpoint not found. Please check plugin configuration.';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Server error. Check the browser console and server logs for details.';
+                        }
+                    }
+                    
+                    AIComposerAdmin.showNotice(errorMessage, 'error');
+                    
+                    if (typeof callback === 'function') {
+                        callback({ success: false, error: error, status: xhr.status, responseText: xhr.responseText });
+                    }
                 }
             });
+        },
+
+        /**
+         * Utility: Format currency
+         */
+        formatCurrency: function(amount) {
+            return '$' + parseFloat(amount).toFixed(2);
+        },
+
+        /**
+         * Utility: Format number with commas
+         */
+        formatNumber: function(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
     };
 
     // Initialize admin functionality
-    ModernWPPluginAdmin.init();
+    AIComposerAdmin.init();
 
     // Make it globally available
-    window.ModernWPPluginAdmin = ModernWPPluginAdmin;
+    window.AIComposerAdmin = AIComposerAdmin;
 
 })(jQuery);

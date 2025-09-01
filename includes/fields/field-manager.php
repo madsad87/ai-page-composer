@@ -8,10 +8,10 @@
  *
  * Field Manager class following ACF patterns
  *
- * @package ModernWPPlugin
+ * @package AIPageComposer
  */
 
-namespace ModernWPPlugin\Fields;
+namespace AIPageComposer\Fields;
 
 /**
  * Field Manager class
@@ -44,24 +44,24 @@ class Field_Manager {
      */
     private function register_sample_field_group() {
         acf_add_local_field_group( array(
-            'key'      => 'group_modern_wp_plugin_sample',
-            'title'    => __( 'Sample Field Group', 'modern-wp-plugin' ),
+            'key'      => 'group_ai_page_composer_sample',
+            'title'    => __( 'Sample Field Group', 'ai-page-composer' ),
             'fields'   => array(
                 array(
                     'key'   => 'field_sample_text',
-                    'label' => __( 'Sample Text', 'modern-wp-plugin' ),
+                    'label' => __( 'Sample Text', 'ai-page-composer' ),
                     'name'  => 'sample_text',
                     'type'  => 'text',
                 ),
                 array(
                     'key'   => 'field_sample_textarea',
-                    'label' => __( 'Sample Textarea', 'modern-wp-plugin' ),
+                    'label' => __( 'Sample Textarea', 'ai-page-composer' ),
                     'name'  => 'sample_textarea',
                     'type'  => 'textarea',
                 ),
                 array(
                     'key'   => 'field_sample_image',
-                    'label' => __( 'Sample Image', 'modern-wp-plugin' ),
+                    'label' => __( 'Sample Image', 'ai-page-composer' ),
                     'name'  => 'sample_image',
                     'type'  => 'image',
                 ),
@@ -90,8 +90,8 @@ class Field_Manager {
      */
     public function add_meta_boxes() {
         add_meta_box(
-            'modern-wp-plugin-fields',
-            __( 'Plugin Custom Fields', 'modern-wp-plugin' ),
+            'ai-page-composer-fields',
+            __( 'Plugin Custom Fields', 'ai-page-composer' ),
             array( $this, 'render_meta_box' ),
             'post',
             'normal',
@@ -110,7 +110,7 @@ class Field_Manager {
             return;
         }
 
-        wp_nonce_field( 'modern_wp_plugin_meta_box', 'modern_wp_plugin_meta_box_nonce' );
+        wp_nonce_field( 'ai_page_composer_meta_box', 'ai_page_composer_meta_box_nonce' );
 
         $sample_text = get_post_meta( $post->ID, 'sample_text', true );
         $sample_textarea = get_post_meta( $post->ID, 'sample_textarea', true );
@@ -119,7 +119,7 @@ class Field_Manager {
         <table class="form-table">
             <tr>
                 <th scope="row">
-                    <label for="sample_text"><?php esc_html_e( 'Sample Text', 'modern-wp-plugin' ); ?></label>
+                    <label for="sample_text"><?php esc_html_e( 'Sample Text', 'ai-page-composer' ); ?></label>
                 </th>
                 <td>
                     <input type="text" id="sample_text" name="sample_text" value="<?php echo esc_attr( $sample_text ); ?>" class="regular-text" />
@@ -127,7 +127,7 @@ class Field_Manager {
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="sample_textarea"><?php esc_html_e( 'Sample Textarea', 'modern-wp-plugin' ); ?></label>
+                    <label for="sample_textarea"><?php esc_html_e( 'Sample Textarea', 'ai-page-composer' ); ?></label>
                 </th>
                 <td>
                     <textarea id="sample_textarea" name="sample_textarea" rows="5" class="large-text"><?php echo esc_textarea( $sample_textarea ); ?></textarea>
@@ -149,8 +149,8 @@ class Field_Manager {
         }
 
         // Verify nonce
-        if ( ! isset( $_POST['modern_wp_plugin_meta_box_nonce'] ) || 
-             ! wp_verify_nonce( $_POST['modern_wp_plugin_meta_box_nonce'], 'modern_wp_plugin_meta_box' ) ) {
+        if ( ! isset( $_POST['ai_page_composer_meta_box_nonce'] ) || 
+             ! wp_verify_nonce( $_POST['ai_page_composer_meta_box_nonce'], 'ai_page_composer_meta_box' ) ) {
             return;
         }
 

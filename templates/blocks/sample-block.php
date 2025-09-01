@@ -13,7 +13,7 @@
  * @param bool   $is_preview True during AJAX preview.
  * @param int    $post_id    The post ID this block is saved to.
  *
- * @package ModernWPPlugin
+ * @package AIPageComposer
  */
 
 // Create id attribute allowing for custom "anchor" value.
