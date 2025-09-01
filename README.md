@@ -1,83 +1,98 @@
-# Modern WordPress Plugin Starter Template
+# AI Page Composer
 
-A comprehensive, industry-standard WordPress plugin template following best practices from **Advanced Custom Fields**, **StudioPress**, and **Genesis Custom Blocks**.
+AI-powered WordPress plugin for intelligent content generation and page composition.
 
 ## 🚀 Features
 
-### Architecture & Design Patterns
-- **Modular Architecture**: Clean separation of concerns with dedicated managers
-- **ACF Integration**: Full Advanced Custom Fields support with fallbacks
-- **Gutenberg Blocks**: Modern block development with ACF integration
-- **REST API**: Custom endpoints with proper authentication
-- **Admin Interface**: Professional WordPress admin integration
+### AI Content Generation
+- **Outline Generation**: AI-driven content structure creation
+- **Section Generation**: Dynamic section content with LLM integration
+- **Blueprint System**: Reusable content templates with schema validation
+- **Block Assembly**: Intelligent Gutenberg block composition
+
+### Content Governance
+- **Run Tracking**: Complete audit trail of AI generations
+- **History Management**: Version control and rollback capabilities
+- **Citation System**: Source tracking for generated content
+- **Rerun Management**: Reproducible content generation workflows
 
 ### Development Tools
-- **Composer**: PHP dependency management and dev tools
-- **npm Scripts**: Frontend build tools and automation
+- **Composer**: PHP dependency management with PSR-4 autoloading
+- **Webpack**: Modern JavaScript bundling and optimization
 - **PHPCS**: WordPress coding standards enforcement
-- **ESLint**: JavaScript code quality
-- **Autoprefixer**: CSS vendor prefixing
-
-### Security & Performance
-- **Input Sanitization**: Comprehensive data validation
-- **Nonce Verification**: CSRF protection
-- **Capability Checks**: Proper permission handling
-- **Database Optimization**: Efficient queries and caching
+- **PHPUnit**: Comprehensive test suite
+- **ESLint/Stylelint**: Frontend code quality tools
 
 ## 📁 Project Structure
 
 ```
-modern-wp-plugin/
-├── modern-wp-plugin.php          # Main plugin file
+ai-page-composer/
+├── ai-page-composer.php          # Main plugin file
 ├── composer.json                 # PHP dependencies
 ├── package.json                  # Node.js dependencies
 ├── includes/                     # Core plugin logic
-│   ├── class-autoloader.php      # PSR-4 autoloader
+│   ├── class-autoloader.php      # PSR-4 autoloader (fallback)
 │   ├── core/                     # Core classes
 │   │   ├── plugin.php            # Main plugin class
 │   │   ├── activator.php         # Activation handler
 │   │   └── deactivator.php       # Deactivation handler
 │   ├── admin/                    # Admin interface
-│   │   └── admin-manager.php     # Admin functionality
-│   ├── fields/                   # Field management
-│   │   └── field-manager.php     # ACF integration
+│   │   ├── admin-manager.php     # Admin functionality
+│   │   ├── settings-manager.php  # Settings management
+│   │   └── block-preferences.php # Block preferences
+│   ├── api/                      # REST API & AI services
+│   │   ├── ai-service-client.php # AI service integration
+│   │   ├── outline-controller.php# Outline generation
+│   │   ├── section-controller.php# Section generation
+│   │   ├── assembly-manager.php  # Block assembly
+│   │   └── governance-controller.php # Run tracking
+│   ├── blueprints/               # Blueprint system
+│   │   ├── blueprint-manager.php # Blueprint management
+│   │   └── schema-processor.php  # Schema validation
 │   ├── blocks/                   # Gutenberg blocks
 │   │   └── block-manager.php     # Block registration
-│   └── api/                      # REST API
-│       └── api-manager.php       # API endpoints
+│   └── utils/                    # Utility classes
+│       ├── security-helper.php   # Security functions
+│       └── validation-helper.php # Validation functions
 ├── assets/                       # Frontend assets
 │   ├── css/                      # Stylesheets
 │   └── js/                       # JavaScript files
 ├── templates/                    # Template files
+│   ├── admin/                    # Admin templates
 │   └── blocks/                   # Block templates
-└── languages/                    # Internationalization
+└── tests/                        # Test suite
+    ├── api/                      # API tests
+    ├── blueprints/               # Blueprint tests
+    └── integration/              # Integration tests
 ```
 
-## 🛠 Setup Instructions
+## 🛠 Development Setup
 
-### 1. Installation
+### Prerequisites
+- PHP 8.0+
+- Composer
+- Node.js 16+
+- WordPress development environment
 
-1. **Clone or download** this template
-2. **Rename** the folder to your plugin name
-3. **Update** plugin information in `modern-wp-plugin.php`
-4. **Replace** all instances of:
-   - `modern-wp-plugin` → your plugin slug
-   - `ModernWPPlugin` → your plugin namespace
-   - `MODERN_WP_PLUGIN` → your plugin constants prefix
+### Installation
 
-### 2. Development Environment
+1. **Clone the repository**
+```bash
+git clone https://github.com/madsad87/ai-page-composer.git
+cd ai-page-composer
+```
 
-#### Install PHP Dependencies
+2. **Install PHP dependencies**
 ```bash
 composer install
 ```
 
-#### Install Node.js Dependencies
+3. **Install Node.js dependencies**
 ```bash
 npm install
 ```
 
-### 3. Available Scripts
+### Development Workflow
 
 #### PHP Development
 ```bash
@@ -87,8 +102,11 @@ composer phpcs
 # Fix coding standards
 composer phpcbf
 
-# Run tests
+# Run unit tests
 composer test
+
+# Run tests with coverage
+composer test:coverage
 ```
 
 #### Frontend Development
@@ -102,145 +120,63 @@ npm run dev
 # Lint CSS
 npm run lint:css
 
-# Lint JavaScript
+# Lint and fix JavaScript
 npm run lint:js
-
-# Fix JavaScript issues
 npm run fix:js
 
-# Generate .pot file for translations
-npm run makepot
+# Run JavaScript tests
+npm run test
 
 # Create distribution zip
 npm run zip
 ```
 
-## 🔧 Customization Guide
+## 🔧 Plugin Architecture
 
-### Adding New Fields
+### Core Components
+1. **Plugin Manager**: Central coordinator for all modules
+2. **API Layer**: REST endpoints for AI services
+3. **Blueprint System**: Content template management
+4. **Governance Layer**: Audit and history tracking
+5. **Admin Interface**: WordPress dashboard integration
 
-1. **Edit** `includes/fields/field-manager.php`
-2. **Add** your field group in `register_field_groups()`
-3. **Use** `Field_Manager::get_field()` to retrieve values
-
-### Creating New Blocks
-
-1. **Register** block in `includes/blocks/block-manager.php`
-2. **Create** template in `templates/blocks/your-block.php`
-3. **Add** styles in `assets/css/style.css`
-
-### Adding API Endpoints
-
-1. **Edit** `includes/api/api-manager.php`
-2. **Register** route in `register_rest_routes()`
-3. **Add** callback and permission functions
-
-### Admin Settings
-
-1. **Modify** `includes/admin/admin-manager.php`
-2. **Add** settings in `admin_init()`
-3. **Create** callbacks for your settings
-
-## 📚 Best Practices Followed
-
-### From Advanced Custom Fields
-- ✅ Field-centric architecture
-- ✅ Extensible design patterns
-- ✅ Database optimization
-- ✅ Developer-friendly APIs
-
-### From StudioPress/Genesis
-- ✅ Comprehensive build tools
-- ✅ Standards compliance
-- ✅ Automated workflows
-- ✅ Clean separation of concerns
-
-### From Genesis Custom Blocks
-- ✅ Block-first architecture
-- ✅ Configuration-driven design
-- ✅ Template flexibility
-- ✅ Modern Gutenberg integration
-
-## 🔒 Security Features
-
-- **Input Sanitization**: All user inputs properly sanitized
-- **Output Escaping**: All outputs properly escaped
-- **Nonce Verification**: CSRF protection on forms
-- **Capability Checks**: Proper permission verification
-- **SQL Injection Prevention**: Prepared statements used
-
-## 🎨 Styling Guidelines
-
-### CSS Organization
-- **Base styles**: Component-specific styles
-- **Block styles**: Gutenberg block styling
-- **Responsive**: Mobile-first approach
-- **Accessibility**: WCAG compliant
-
-### JavaScript Structure
-- **Modular**: Object-oriented approach
-- **Event-driven**: Proper event handling
-- **Performance**: Debounced resize events
-- **Compatibility**: Fallbacks for older browsers
-
-## 🌐 Internationalization
-
-The template is fully internationalization-ready:
-
-1. **Text Domain**: `modern-wp-plugin`
-2. **POT Generation**: `npm run makepot`
-3. **Translation Functions**: All strings use `__()`, `_e()`, etc.
+### Design Patterns
+- **Manager Pattern**: Dedicated managers for each domain
+- **PSR-4 Autoloading**: Composer-based class loading
+- **Singleton Pattern**: Shared service instances
+- **Observer Pattern**: WordPress hooks integration
+- **Strategy Pattern**: Pluggable AI services
 
 ## 🧪 Testing
 
-### PHP Testing
+Run the comprehensive test suite to ensure functionality:
+
 ```bash
-# Run PHPUnit tests
+# Run all tests
 composer test
 
-# Generate coverage report
-composer test:coverage
+# Run specific test suite
+composer test --testsuite API
+
+# Run tests with filter
+composer test --filter OutlineGeneratorTest
 ```
 
-### JavaScript Testing
-```bash
-# Run Jest tests
-npm run test
+## 📚 Documentation
 
-# Watch mode
-npm run test:watch
-```
-
-## 📦 Distribution
-
-### Create Release Package
-```bash
-# Build and create zip file
-npm run zip
-```
-
-This excludes development files and creates a clean distribution package.
+- `GOVERNANCE_IMPLEMENTATION.md`: Run tracking and audit system
+- `MVDB_INTEGRATION.md`: Content retrieval pipeline
+- `OUTLINE_IMPLEMENTATION.md`: Outline generation logic
+- Code-level PHPDoc documentation throughout
 
 ## 🤝 Contributing
 
-1. **Fork** the repository
-2. **Create** feature branch
-3. **Follow** coding standards
-4. **Add** tests for new features
-5. **Submit** pull request
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a pull request
 
 ## 📄 License
 
-GPL v2 or later - same as WordPress
-
-## 🆘 Support
-
-- **Documentation**: Check inline comments
-- **Issues**: Use GitHub issues
-- **Standards**: Follow WordPress Coding Standards
-
----
-
-**Happy Plugin Development!** 🎉
-
-This template provides a solid foundation for creating modern, secure, and performant WordPress plugins following industry best practices.
+GPL-2.0-or-later - See [LICENSE](LICENSE) file for details.
